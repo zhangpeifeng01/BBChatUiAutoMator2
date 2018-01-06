@@ -22,6 +22,8 @@ public class UiTest extends UiAutomatorTestCase {
     final static int BURNTXT=3;
     final static int BURNSMAILE=4;
     final static int BURNIMG=5;
+    final static int AAA=6;
+    final static int BBB=7;
     /**
      * 单聊
      */
@@ -37,7 +39,6 @@ public class UiTest extends UiAutomatorTestCase {
         appViews.setAsHorizontalList();
         appViews.scrollForward();
         appViews.scrollForward();
-
         UiObject Calculator = new UiObject(new UiSelector().index(16));
         Calculator.clickAndWaitForNewWindow();
         Thread.sleep(4000);
@@ -55,7 +56,6 @@ public class UiTest extends UiAutomatorTestCase {
             bbChat(chatGrop,"邦邦社区测试");
         }
     }
-
 
         getUiDevice().pressBack();
     }
