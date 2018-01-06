@@ -7,11 +7,21 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Administrator on 2018/1/1 0001.
  */
 
 public class UiTest extends UiAutomatorTestCase {
+
+    final static int TXT=0;
+    final static int SMAILE=1;
+    final static int IMG=2;
+    final static int BURNTXT=3;
+    final static int BURNSMAILE=4;
+    final static int BURNIMG=5;
     /**
      * 单聊
      */
@@ -69,8 +79,17 @@ public class UiTest extends UiAutomatorTestCase {
                     UiObject ll_group_list=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/lv_listView"));
                     UiObject group_title=ll_group_list.getChild(new UiSelector().index(0));
                     group_title.clickAndWaitForNewWindow();
-//                    sendSmaile();
-                    sendText();
+//                    send_Burn(null,TXT);
+//                    send_Burn(null,SMAILE);
+                    send_Burn(null,IMG);
+//                    send_Burn("5秒",BURNTXT);
+//                    send_Burn("10秒",BURNTXT);
+//                    send_Burn("30秒",BURNTXT);
+//                    send_Burn("1分",BURNTXT);
+//                    send_Burn("5秒",BURNSMAILE);
+//                    send_Burn("10秒",BURNSMAILE);
+//                    send_Burn("30秒",BURNSMAILE);
+//                    send_Burn("1分",BURNSMAILE);
                 }
                 break;
         }
@@ -84,8 +103,10 @@ public class UiTest extends UiAutomatorTestCase {
 
         UiObject chat_input=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/chat_input"));//输入
         UiObject button_message_send=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/button_message_send"));
-        for (int i=0;i<10;i++){
-            chat_input.setText("UiAuot测试"+i);
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");//设置日期格式
+        for (int i=0;i<5;i++){
+
+            chat_input.setText("测试"+ df.format(new Date()));
             button_message_send.click();
         }
     }
@@ -101,7 +122,7 @@ public class UiTest extends UiAutomatorTestCase {
             try {
                 smailefaceid.click();
                 int childCount = face_gridview_id.getChildCount()-1;
-                for (int i=0;i<=childCount;i++){
+                for (int i=0;i<=5;i++){
                     face_gridview_id.getChild(new UiSelector().index(i)).click();
                     button_message_send.click();
                 }
@@ -112,5 +133,82 @@ public class UiTest extends UiAutomatorTestCase {
 
         }
         getUiDevice().pressBack();
+    }
+    public void sendImg() throws UiObjectNotFoundException {
+        UiObject galleryid=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/galleryid"));
+        UiObject horzontalistview=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/horzontalistview"));
+        UiObject isselected1=horzontalistview.getChild(new UiSelector().index(1)).getChild(new UiSelector().index(1));
+        UiObject isselected2=horzontalistview.getChild(new UiSelector().index(2)).getChild(new UiSelector().index(1));
+        UiObject buttonphotoSend=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/buttonphotoSend"));
+        galleryid.click();
+        isselected1.click();
+        isselected2.click();
+        buttonphotoSend.click();
+
+    }
+
+    /**
+     * 阅后即焚
+     * @param s 设置秒数 5s 10s 30s 1m
+     * @throws UiObjectNotFoundException
+     */
+    public void send_Burn(String s,int type ) throws UiObjectNotFoundException {
+        switch (type){
+            case TXT:
+                sendText();
+                break;
+            case SMAILE:
+                sendSmaile();
+                break;
+            case IMG:
+                sendImg();
+                break;
+            case BURNTXT:
+                UiObject send_burn=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/send_burn"));
+                UiObject tv_ok=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/tv_ok"));
+                send_burn.click();
+                UiScrollable scrollable= new UiScrollable(new UiSelector().resourceId("com.anbang.bbchat:id/wheel_view_wv1"));
+                tv_ok.clickAndWaitForNewWindow();
+                setTime(s);
+                sendText();
+                break;
+            case BURNSMAILE:
+                UiObject send_burn_smaile=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/send_burn"));
+                UiObject tv_ok_smaile=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/tv_ok"));
+                send_burn_smaile.click();
+                setTime(s);
+                tv_ok_smaile.clickAndWaitForNewWindow();
+                sendSmaile();
+                break;
+            case BURNIMG:
+                sendImg();
+                setTime(s);
+                break;
+
+        }
+    }
+    public void setTime(String s) throws UiObjectNotFoundException {
+        if (s.equals("30秒")){
+            UiScrollable scrollable_smaile= new UiScrollable(new UiSelector().text("5秒"));
+            scrollable_smaile.setAsVerticalList();
+            scrollable_smaile.scrollForward();
+            scrollable_smaile.scrollForward();
+            scrollable_smaile.scrollForward();
+        }else if (s.equals("5秒")){
+            UiScrollable scrollable_smaile= new UiScrollable(new UiSelector().text("5秒"));
+            scrollable_smaile.setAsVerticalList();
+            scrollable_smaile.scrollForward();
+        }else if (s.equals("10秒")){
+            UiScrollable scrollable_smaile= new UiScrollable(new UiSelector().text("5秒"));
+            scrollable_smaile.setAsVerticalList();
+            scrollable_smaile.scrollForward();
+            scrollable_smaile.scrollForward();
+        }else if (s.equals("1分钟")){
+            UiScrollable scrollable_smaile= new UiScrollable(new UiSelector().text("10秒"));
+            scrollable_smaile.setAsVerticalList();
+            scrollable_smaile.scrollForward();
+            scrollable_smaile.scrollForward();
+            scrollable_smaile.scrollForward();
+        }
     }
 }
