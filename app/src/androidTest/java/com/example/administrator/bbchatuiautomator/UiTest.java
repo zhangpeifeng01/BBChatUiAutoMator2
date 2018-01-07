@@ -2,6 +2,7 @@ package com.example.administrator.bbchatuiautomator;
 
 import android.app.UiAutomation;
 import android.support.test.uiautomator.UiAutomatorTestCase;
+import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
@@ -22,8 +23,11 @@ public class UiTest extends UiAutomatorTestCase {
     final static int BURNTXT=3;
     final static int BURNSMAILE=4;
     final static int BURNIMG=5;
-    final static int AAA=6;
-    final static int BBB=7;
+    final static int Voice=6;
+    final static int BURNsendVoice=7;
+    final static int SHOTTXT=8;
+    final static int SHOTSMAILE=9;
+    final static int SHOTIMG=10;
     /**
      * 单聊
      */
@@ -79,9 +83,10 @@ public class UiTest extends UiAutomatorTestCase {
                     UiObject ll_group_list=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/lv_listView"));
                     UiObject group_title=ll_group_list.getChild(new UiSelector().index(0));
                     group_title.clickAndWaitForNewWindow();
+                    sendVoice();
 //                    send_Burn(null,TXT);
 //                    send_Burn(null,SMAILE);
-                    send_Burn(null,IMG);
+//                    send_Burn(null,IMG);
 //                    send_Burn("5秒",BURNTXT);
 //                    send_Burn("10秒",BURNTXT);
 //                    send_Burn("30秒",BURNTXT);
@@ -94,7 +99,13 @@ public class UiTest extends UiAutomatorTestCase {
                 break;
         }
     }
+ public void sendVoice() throws UiObjectNotFoundException {
+     UiObject speakerid=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/speakerid"));//输入
+     UiObject edit_work_record_coltor=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/edit_work_record_coltor"));//输入
+     speakerid.click();
+     longClick(getUiDevice(),edit_work_record_coltor,800);
 
+ }
     /**
      * 发送文本消息
      * @throws UiObjectNotFoundException
@@ -134,6 +145,11 @@ public class UiTest extends UiAutomatorTestCase {
         }
         getUiDevice().pressBack();
     }
+
+    /**
+     * 发送图片
+     * @throws UiObjectNotFoundException
+     */
     public void sendImg() throws UiObjectNotFoundException {
         UiObject galleryid=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/galleryid"));
         UiObject horzontalistview=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/horzontalistview"));
@@ -146,6 +162,7 @@ public class UiTest extends UiAutomatorTestCase {
         buttonphotoSend.click();
 
     }
+
 
     /**
      * 阅后即焚
@@ -162,6 +179,9 @@ public class UiTest extends UiAutomatorTestCase {
                 break;
             case IMG:
                 sendImg();
+                break;
+            case Voice:
+                sendVoice();
                 break;
             case BURNTXT:
                 UiObject send_burn=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/send_burn"));
@@ -184,6 +204,30 @@ public class UiTest extends UiAutomatorTestCase {
                 sendImg();
                 setTime(s);
                 break;
+            case BURNsendVoice:
+                UiObject send_burn_Voice=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/send_burn"));
+                UiObject tv_ok_Voice=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/tv_ok"));
+                send_burn_Voice.click();
+                setTime(s);
+                tv_ok_Voice.clickAndWaitForNewWindow();
+                sendVoice();
+                break;
+            case SHOTTXT:
+                UiObject shot_txt=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/shot"));
+                shot_txt.click();
+                sendText();
+                break;
+            case SHOTSMAILE:
+                UiObject shot_smaile=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/shot"));
+                shot_smaile.click();
+                sendSmaile();
+                break;
+            case SHOTIMG:
+                UiObject shot_img=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/shot"));
+                shot_img.click();
+                sendImg();
+                break;
+
 
         }
     }
@@ -210,5 +254,16 @@ public class UiTest extends UiAutomatorTestCase {
             scrollable_smaile.scrollForward();
             scrollable_smaile.scrollForward();
         }
+    }
+    /**
+     * 控件长按操作
+     * @param ud
+     * @param uiObject
+     * @param steps
+     * @throws UiObjectNotFoundException
+     */
+    public  void longClick(UiDevice ud, UiObject uiObject, int steps) throws UiObjectNotFoundException{
+        ud.swipe(uiObject.getBounds().centerX(), uiObject.getBounds().centerY(),
+                uiObject.getBounds().centerX(), uiObject.getBounds().centerY(), steps);
     }
 }
