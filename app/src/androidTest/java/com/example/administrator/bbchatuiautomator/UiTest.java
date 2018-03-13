@@ -7,6 +7,8 @@ import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
+import android.support.test.uiautomator.UiWatcher;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -48,31 +50,37 @@ public class UiTest extends UiAutomatorTestCase {
      */
     final static int chatGrop=1;
     public void testDemo() throws UiObjectNotFoundException, InterruptedException {
+        getUiDevice().getInstance().registerWatcher("签到", new UiWatcher() {
+            @Override
+            public boolean checkForCondition() {
+               UiObject progress_layout= new UiObject(new UiSelector().resourceId("progress_layout"));
+                if (progress_layout.exists()){
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         getUiDevice().pressHome();//点击home
         //滑动
         UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
         appViews.setAsHorizontalList();
         appViews.scrollForward();
-//        appViews.scrollForward();
         UiObject Calculator = new UiObject(new UiSelector().index(17));
         Calculator.clickAndWaitForNewWindow();
-        Thread.sleep(4000);
+        Thread.sleep(5000);
         UiObject button2=new UiObject(new UiSelector().resourceId("android:id/button2"));//更新取消按钮
         if (button2.exists()){
             button2.clickAndWaitForNewWindow();
         }
 //        CreateGroup(si_but);
 //        CreateGroup(gong_but);
-        UiObject main_tab_stagebutton=new UiObject(new UiSelector().text("联系人"));//首页按钮
-        if (main_tab_stagebutton.exists()){
-            main_tab_stagebutton.clickAndWaitForNewWindow();
-        UiObject circle_list=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/circle_list"));//联系人页群聊按钮
-        if (circle_list.exists()){
-            circle_list.clickAndWaitForNewWindow();
-            bbChat(chatGrop,"投票测试群");
-        }
-    }
-
+//          bbChat(chatGrop,"邦邦社区测试");
+            bbChat(chat,"褚财");
         getUiDevice().pressBack();
     }
 
@@ -83,12 +91,63 @@ public class UiTest extends UiAutomatorTestCase {
      * @throws UiObjectNotFoundException
      */
     public void bbChat(int type,String name) throws UiObjectNotFoundException {
-
+        UiObject main_tab_stagebutton=new UiObject(new UiSelector().text("联系人"));//首页按钮
+        if (main_tab_stagebutton.exists()) {
+            main_tab_stagebutton.clickAndWaitForNewWindow();
+        }
         switch (type){
             case chat:
+                new UiObject(new UiSelector().text(name)).clickAndWaitForNewWindow();
+                new UiObject(new UiSelector().text("发消息")).clickAndWaitForNewWindow();
+                try {
+                    send_Burn(null,TXT,false);
+                    send_Burn(null,SMAILE,false);
+                    send_Burn(null,IMG,false);
+
+                    send_Burn("5秒",BURNTXT,false);
+                    send_Burn("10秒",BURNTXT,false);
+                    send_Burn("30秒",BURNTXT,false);
+                    send_Burn("1分钟",BURNTXT,false);
+                    send_Burn("5秒",BURNSMAILE,false);
+                    send_Burn("10秒",BURNSMAILE,false);
+                    send_Burn("30秒",BURNSMAILE,false);
+                    send_Burn("1分钟",BURNSMAILE,false);
+
+                    send_Burn("5秒",BURNIMG,false);
+                    send_Burn("10秒",BURNIMG,false);
+                    send_Burn("30秒",BURNIMG,false);
+                    send_Burn("1分钟",BURNIMG,false);
+                    //语音
+                    send_Burn(null,Voice,false);
+                    //防截屏文本
+                    send_Burn(null,SHOTTXT,false);
+                    //防截屏表情
+                    send_Burn(null,SHOTSMAILE,false);
+                    //防截屏图片
+                    send_Burn(null,SHOTIMG,false);
+                    //名片
+                    send_Burn(null,card,false);
+                    //文件
+                    send_Burn(null,file,false);
+                    //日历分享到单聊中
+                    send_Burn(null,calendar,false);
+                    //日历分享到群聊中
+                    send_Burn(null,calendar,true);
+                    //签到
+                    send_Burn(null,Signin,false);
+                    //位置
+                    send_Burn(null,location,false);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Log.e("InterruptedException",e.toString());
+                }
 
                 break;
             case chatGrop:
+                UiObject circle_list=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/circle_list"));//联系人页群聊按钮
+                if (circle_list.exists()){
+                    circle_list.clickAndWaitForNewWindow();
+                }
                 UiObject filter_edit=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/filter_edit"));//查找收索
                 if (filter_edit.exists()){
                     filter_edit.setText(name);
@@ -96,34 +155,53 @@ public class UiTest extends UiAutomatorTestCase {
                     UiObject group_title=ll_group_list.getChild(new UiSelector().index(0));
                     group_title.clickAndWaitForNewWindow();
                     boolean ismsg=false;
-                    for (int i=0;i<=20;i++){
-                        group_Voting(ismsg);
-                    }
+//                        group_Voting(ismsg);
+//                    group_Voting(!ismsg);
 
-//                  try {
-//                    send_Burn(null,TXT);
-//                    send_Burn(null,SMAILE);
-//                    send_Burn(null,IMG);
-//                    send_Burn(null,Voice);
-//                    send_Burn("5秒",BURNTXT);
-//                    send_Burn("10秒",BURNTXT);
-//                    send_Burn("30秒",BURNTXT);
-//                    send_Burn("1分钟",BURNTXT);
-//                    send_Burn("5秒",BURNSMAILE);
-//                    send_Burn("10秒",BURNSMAILE);
-//                    send_Burn("30秒",BURNSMAILE);
-//                    send_Burn("1分钟",BURNSMAILE);
-//                    send_Burn(null,SHOTTXT);
-//                    send_Burn(null,SHOTSMAILE);
-//                    send_Burn(null,SHOTIMG);
-//
-//                        send_Burn(null,Signin);
-//                        send_Burn(null,location);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                  try {
+                    send_Burn(null,TXT,false);
+                    send_Burn(null,SMAILE,false);
+                    send_Burn(null,IMG,false);
+
+                    send_Burn("5秒",BURNTXT,false);
+                    send_Burn("10秒",BURNTXT,false);
+                    send_Burn("30秒",BURNTXT,false);
+                    send_Burn("1分钟",BURNTXT,false);
+                    send_Burn("5秒",BURNSMAILE,false);
+                    send_Burn("10秒",BURNSMAILE,false);
+                    send_Burn("30秒",BURNSMAILE,false);
+                    send_Burn("1分钟",BURNSMAILE,false);
+
+                      send_Burn("5秒",BURNIMG,false);
+                      send_Burn("10秒",BURNIMG,false);
+                      send_Burn("30秒",BURNIMG,false);
+                      send_Burn("1分钟",BURNIMG,false);
+                      //语音
+                      send_Burn(null,Voice,false);
+                      //防截屏文本
+                    send_Burn(null,SHOTTXT,false);
+                      //防截屏表情
+                    send_Burn(null,SHOTSMAILE,false);
+                      //防截屏图片
+                    send_Burn(null,SHOTIMG,false);
+                      //名片
+                      send_Burn(null,card,false);
+                      //文件
+                      send_Burn(null,file,false);
+                      //日历分享到单聊中
+                      send_Burn(null,calendar,false);
+                      //日历分享到群聊中
+                      send_Burn(null,calendar,true);
+                      //签到
+                        send_Burn(null,Signin,false);
+                      //位置
+                        send_Burn(null,location,false);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                      Log.e("InterruptedException",e.toString());
+                    }
                 }
-//                break;
+                break;
         }
     }
 
@@ -147,7 +225,7 @@ public class UiTest extends UiAutomatorTestCase {
         UiObject chat_input=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/chat_input"));//输入
         UiObject button_message_send=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/button_message_send"));
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");//设置日期格式
-        for (int i=0;i<5;i++){
+        for (int i=0;i<2;i++){
 
             chat_input.setText("测试"+ df.format(new Date()));
             if (button_message_send.exists()){
@@ -170,7 +248,7 @@ public class UiTest extends UiAutomatorTestCase {
             try {
                 smailefaceid.click();
                 int childCount = face_gridview_id.getChildCount()-1;
-                for (int i=0;i<=5;i++){
+                for (int i=0;i<=2;i++){
                     face_gridview_id.getChild(new UiSelector().index(i)).click();
                     button_message_send.click();
                 }
@@ -213,7 +291,10 @@ public class UiTest extends UiAutomatorTestCase {
      * @param s 设置秒数 5s 10s 30s 1m
      * @throws UiObjectNotFoundException
      */
-    public void send_Burn(String s,int type ) throws UiObjectNotFoundException, InterruptedException {
+    public void send_Burn(String s,int type ,boolean isGrede) throws  InterruptedException {
+        try {
+
+
         UiObject  filedirctoryid=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/filedirctoryid"));
         UiObject fileselectsend=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/fileselectsend"));
         switch (type){
@@ -230,11 +311,13 @@ public class UiTest extends UiAutomatorTestCase {
                 sendVoice();
                 break;
             case BURNTXT:
+
+
                 UiObject send_burn=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/send_burn"));
-                UiObject tv_ok=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/tv_ok"));
-                send_burn.clickAndWaitForNewWindow(3000);
+                send_burn.clickAndWaitForNewWindow();
                 UiScrollable scrollable= new UiScrollable(new UiSelector().resourceId("com.anbang.bbchat:id/wheel_view_wv1"));
                 setTime(s);
+                UiObject tv_ok=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/tv_ok"));
                 tv_ok.clickAndWaitForNewWindow();
                 sendText();
                 break;
@@ -284,7 +367,14 @@ public class UiTest extends UiAutomatorTestCase {
                 if (!fileselectsend.exists()){
                     filedirctoryid.click();
                 }
-                fileselectsend.getChild(new UiSelector().index(1)).click();
+//                fileselectsend.getChild(new UiSelector().index(1)).click();
+                new UiObject(new UiSelector().text("文件")).click();
+               if(new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/doc_item_doc_size")).exists()){
+                  UiObject dochome= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/drlv_dochome"));
+                  int count= dochome.getChildCount()-2;
+                   dochome.getChild(new UiSelector().index(count)).click();
+                   new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/btn_doc_delete_confirm")).clickAndWaitForNewWindow();
+               }
                 break;
             case report://汇报
                 if (!fileselectsend.exists()){
@@ -295,20 +385,54 @@ public class UiTest extends UiAutomatorTestCase {
                 if (!fileselectsend.exists()){
                     filedirctoryid.click();
                 }
-                break;
+                fileselectsend.getChild(new UiSelector().index(3)).click();
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/fab_button_group")).click();
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/tv_count_contact")).click();
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/ll_friend")).click();
+                UiObject recycler_contact1= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/recycler_contact"));
+                recycler_contact1.getChild(new UiSelector().index(0)).click();
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/btn_submit")).clickAndWaitForNewWindow();
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/rl_end")).clickAndWaitForNewWindow();
+                UiScrollable minute=new UiScrollable(new UiSelector().text("今天"));
+                minute.setAsVerticalList();
+                minute.scrollForward();
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/tv_confirm")).clickAndWaitForNewWindow();
+
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/et_title")).setText("测试日历主题");
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/et_des")).setText("测试日历");
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/title_right_btn")).clickAndWaitForNewWindow();
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/btn_title_more")).clickAndWaitForNewWindow();
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/prompt_list")).getChild(new UiSelector().index(0));
+                new UiObject(new UiSelector().text("邦邦好友")).clickAndWaitForNewWindow();
+                new UiObject(new UiSelector().text("创建聊天")).clickAndWaitForNewWindow();
+
+
+                if (isGrede){
+                    new UiObject(new UiSelector().text("群聊")).clickAndWaitForNewWindow();
+                    UiObject lv_listView= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/lv_listView"));
+                    lv_listView.getChild(new UiSelector().index(0)).click();
+                }
+                    new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/et_comment")).setText("测试日历备注");
+                    new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/positiveButton")).clickAndWaitForNewWindow();
+                    getUiDevice().pressBack();
+                    break;
+
             case Signin://签到
                 if (!fileselectsend.exists()){
                     filedirctoryid.click();
                 }
                 fileselectsend.getChild(new UiSelector().index(4)).click();
-                Thread.sleep(3000);
+                Thread.sleep(2000);
+                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/iv_punch_button")).click();
+
                 new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/et_sign_backup")).setText("测试签到");
                 new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/gv_cc")).getChild(new UiSelector().index(0)).click();
                 new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/ll_friend")).clickAndWaitForNewWindow();
                UiObject recycler_contact= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/recycler_contact"));
                 recycler_contact.getChild(new UiSelector().index(0)).click();
                 new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/btn_submit")).clickAndWaitForNewWindow();
-                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/btn_sign")).clickAndWaitForNewWindow();
+                new UiObject(new UiSelector().text("提交")).clickAndWaitForNewWindow();
+                getUiDevice().pressBack();
                 break;
             case location://位置
                 if (!fileselectsend.exists()){
@@ -329,12 +453,21 @@ public class UiTest extends UiAutomatorTestCase {
                 break;
 
         }
+        }catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
     }
-    public void setTime(String s) throws UiObjectNotFoundException {
+
+
+    public void setTime(String s)  {
+        try {
         UiScrollable scrollable_smaile= new UiScrollable(new UiSelector().text("5秒"));
         if (s.equals("30秒")){
             scrollable_smaile.setAsVerticalList();
-            scrollable_smaile.scrollForward();
+
+                scrollable_smaile.scrollForward();
+
             scrollable_smaile.scrollForward();
             scrollable_smaile.scrollForward();
         }else if (s.equals("5秒")){
@@ -351,8 +484,19 @@ public class UiTest extends UiAutomatorTestCase {
             scrollable_smaile.scrollForward();
             scrollable_smaile.scrollForward();
         }
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
     }
 
+    /**
+     *
+     * @param type
+     * final static int si_but=18;//创建私有群
+      final static int gong_but=19;//创建公开群
+     * @throws UiObjectNotFoundException
+     */
     public void CreateGroup(int type) throws UiObjectNotFoundException {
         //首页+号
         UiObject title_right_img_btn= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/title_right_img_btn"));
@@ -360,7 +504,7 @@ public class UiTest extends UiAutomatorTestCase {
         //发起群聊
         UiObject prompt_item= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/prompt_item"));
 
-        UiObject gong= new UiObject(new UiSelector().text("公开群"));
+
         prompt_item.click();
         switch (type){
             case si_but:
@@ -368,6 +512,7 @@ public class UiTest extends UiAutomatorTestCase {
                 si.click();
                 break;
             case gong_but:
+                UiObject gong= new UiObject(new UiSelector().text("公开群"));
                 gong.click();
                 break;
         }
@@ -493,7 +638,9 @@ public class UiTest extends UiAutomatorTestCase {
              new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/et_describe")).setText("测试投票描述");
             new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/publish")).click();
         UiObject chat_messages= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/chat_messages")).getChild(new UiSelector().index(1));
-        chat_messages.getChild(new UiSelector().resourceId("com.anbang.bbchat:id/linearLayout1")).click();
+        UiObject linear= chat_messages.getChild(new UiSelector().resourceId("com.anbang.bbchat:id/linearLayout1"));
+        if (linear.exists()){
+        linear .clickAndWaitForNewWindow();
 //        UiObject text_content1= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/text_content1"));
 //        UiObject imageView11= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/imageView11"));
 
@@ -504,6 +651,7 @@ public class UiTest extends UiAutomatorTestCase {
         UiObject btn_vote= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/btn_vote"));
         btn_vote.click();
         getUiDevice().pressBack();
+        }
     }
     /**
      * 控件长按操作
