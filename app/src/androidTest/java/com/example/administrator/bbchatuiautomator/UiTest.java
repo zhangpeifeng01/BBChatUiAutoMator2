@@ -79,8 +79,8 @@ public class UiTest extends UiAutomatorTestCase {
         }
 //        CreateGroup(si_but);
 //        CreateGroup(gong_but);
-//          bbChat(chatGrop,"邦邦社区测试");
-            bbChat(chat,"褚财");
+          bbChat(chatGrop,"邦邦社区测试");
+//            bbChat(chat,"潘潘");
         getUiDevice().pressBack();
     }
 
@@ -99,48 +99,11 @@ public class UiTest extends UiAutomatorTestCase {
             case chat:
                 new UiObject(new UiSelector().text(name)).clickAndWaitForNewWindow();
                 new UiObject(new UiSelector().text("发消息")).clickAndWaitForNewWindow();
-                try {
-                    send_Burn(null,TXT,false);
-                    send_Burn(null,SMAILE,false);
-                    send_Burn(null,IMG,false);
+                UiObject chat_messages=new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/chat_messages"));
+                chat_messages.getChild(new UiSelector().index(0));
 
-                    send_Burn("5秒",BURNTXT,false);
-                    send_Burn("10秒",BURNTXT,false);
-                    send_Burn("30秒",BURNTXT,false);
-                    send_Burn("1分钟",BURNTXT,false);
-                    send_Burn("5秒",BURNSMAILE,false);
-                    send_Burn("10秒",BURNSMAILE,false);
-                    send_Burn("30秒",BURNSMAILE,false);
-                    send_Burn("1分钟",BURNSMAILE,false);
 
-                    send_Burn("5秒",BURNIMG,false);
-                    send_Burn("10秒",BURNIMG,false);
-                    send_Burn("30秒",BURNIMG,false);
-                    send_Burn("1分钟",BURNIMG,false);
-                    //语音
-                    send_Burn(null,Voice,false);
-                    //防截屏文本
-                    send_Burn(null,SHOTTXT,false);
-                    //防截屏表情
-                    send_Burn(null,SHOTSMAILE,false);
-                    //防截屏图片
-                    send_Burn(null,SHOTIMG,false);
-                    //名片
-                    send_Burn(null,card,false);
-                    //文件
-                    send_Burn(null,file,false);
-                    //日历分享到单聊中
-                    send_Burn(null,calendar,false);
-                    //日历分享到群聊中
-                    send_Burn(null,calendar,true);
-                    //签到
-                    send_Burn(null,Signin,false);
-                    //位置
-                    send_Burn(null,location,false);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Log.e("InterruptedException",e.toString());
-                }
+
 
                 break;
             case chatGrop:
@@ -158,50 +121,58 @@ public class UiTest extends UiAutomatorTestCase {
 //                        group_Voting(ismsg);
 //                    group_Voting(!ismsg);
 
-                  try {
-                    send_Burn(null,TXT,false);
-                    send_Burn(null,SMAILE,false);
-                    send_Burn(null,IMG,false);
+                  sendMsg();//发送消息
 
-                    send_Burn("5秒",BURNTXT,false);
-                    send_Burn("10秒",BURNTXT,false);
-                    send_Burn("30秒",BURNTXT,false);
-                    send_Burn("1分钟",BURNTXT,false);
-                    send_Burn("5秒",BURNSMAILE,false);
-                    send_Burn("10秒",BURNSMAILE,false);
-                    send_Burn("30秒",BURNSMAILE,false);
-                    send_Burn("1分钟",BURNSMAILE,false);
-
-                      send_Burn("5秒",BURNIMG,false);
-                      send_Burn("10秒",BURNIMG,false);
-                      send_Burn("30秒",BURNIMG,false);
-                      send_Burn("1分钟",BURNIMG,false);
-                      //语音
-                      send_Burn(null,Voice,false);
-                      //防截屏文本
-                    send_Burn(null,SHOTTXT,false);
-                      //防截屏表情
-                    send_Burn(null,SHOTSMAILE,false);
-                      //防截屏图片
-                    send_Burn(null,SHOTIMG,false);
-                      //名片
-                      send_Burn(null,card,false);
-                      //文件
-                      send_Burn(null,file,false);
-                      //日历分享到单聊中
-                      send_Burn(null,calendar,false);
-                      //日历分享到群聊中
-                      send_Burn(null,calendar,true);
-                      //签到
-                        send_Burn(null,Signin,false);
-                      //位置
-                        send_Burn(null,location,false);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                      Log.e("InterruptedException",e.toString());
-                    }
                 }
                 break;
+        }
+    }
+    /**
+     * 发送消息
+     */
+    public void sendMsg(){
+        try {
+
+//            send_Burn(null,TXT,false);
+//        send_Burn(null,SMAILE,false);
+//        send_Burn(null,IMG,false);
+//
+//        send_Burn("5秒",BURNTXT,false);
+//        send_Burn("10秒",BURNTXT,false);
+//        send_Burn("30秒",BURNTXT,false);
+//        send_Burn("1分钟",BURNTXT,false);
+//        send_Burn("5秒",BURNSMAILE,false);
+//        send_Burn("10秒",BURNSMAILE,false);
+//        send_Burn("30秒",BURNSMAILE,false);
+//        send_Burn("1分钟",BURNSMAILE,false);
+//
+//        send_Burn("5秒",BURNIMG,false);
+//        send_Burn("10秒",BURNIMG,false);
+//        send_Burn("30秒",BURNIMG,false);
+//        send_Burn("1分钟",BURNIMG,false);
+//        //语音
+//        send_Burn(null,Voice,false);
+//        //防截屏文本
+//        send_Burn(null,SHOTTXT,false);
+//        //防截屏表情
+//        send_Burn(null,SHOTSMAILE,false);
+//        //防截屏图片
+//        send_Burn(null,SHOTIMG,false);
+//        //名片
+//        send_Burn(null,card,false);
+        //文件
+        send_Burn(null,file,false);
+        //日历分享到单聊中
+        send_Burn(null,calendar,false);
+        //日历分享到群聊中
+        send_Burn(null,calendar,true);
+//        签到
+        send_Burn(null,Signin,false);
+        //位置
+        send_Burn(null,location,false);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Log.e("InterruptedException",e.toString());
         }
     }
 
@@ -371,7 +342,7 @@ public class UiTest extends UiAutomatorTestCase {
                 new UiObject(new UiSelector().text("文件")).click();
                if(new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/doc_item_doc_size")).exists()){
                   UiObject dochome= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/drlv_dochome"));
-                  int count= dochome.getChildCount()-2;
+                  int count= dochome.getChildCount()-1;
                    dochome.getChild(new UiSelector().index(count)).click();
                    new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/btn_doc_delete_confirm")).clickAndWaitForNewWindow();
                }
@@ -402,15 +373,16 @@ public class UiTest extends UiAutomatorTestCase {
                 new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/et_des")).setText("测试日历");
                 new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/title_right_btn")).clickAndWaitForNewWindow();
                 new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/btn_title_more")).clickAndWaitForNewWindow();
-                new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/prompt_list")).getChild(new UiSelector().index(0));
+                new UiObject(new UiSelector().text("分享")).clickAndWaitForNewWindow();
                 new UiObject(new UiSelector().text("邦邦好友")).clickAndWaitForNewWindow();
                 new UiObject(new UiSelector().text("创建聊天")).clickAndWaitForNewWindow();
-
-
                 if (isGrede){
                     new UiObject(new UiSelector().text("群聊")).clickAndWaitForNewWindow();
                     UiObject lv_listView= new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/lv_listView"));
+
                     lv_listView.getChild(new UiSelector().index(0)).click();
+                }else {
+                    new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/lv_contact")).getChild(new UiSelector().index(0)).click();
                 }
                     new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/et_comment")).setText("测试日历备注");
                     new UiObject(new UiSelector().resourceId("com.anbang.bbchat:id/positiveButton")).clickAndWaitForNewWindow();
